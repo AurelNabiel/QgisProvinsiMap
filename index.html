@@ -39,7 +39,7 @@
         <script>
         var map = L.map('map', {
             zoomControl:false, maxZoom:28, minZoom:1
-        }).fitBounds([[-12.167870407702662,102.34069605420072],[6.322349526064336,122.1293864889345]]);
+        }).fitBounds([[-8.709561535354663,98.93870334166775],[2.708224193600323,118.72739377640153]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
@@ -247,7 +247,7 @@
         map.addLayer(layer_Provinsi_total_penduduk_1);
         var overlaysTree = [
             {label: 'Provinsi_total_penduduk<br /><table><tr><td style="text-align: center;"><img src="legend/Provinsi_total_penduduk_1_2647006959400.png" /></td><td>264700 - 695940</td></tr><tr><td style="text-align: center;"><img src="legend/Provinsi_total_penduduk_1_69594013688401.png" /></td><td>695940 - 1368840</td></tr><tr><td style="text-align: center;"><img src="legend/Provinsi_total_penduduk_1_136884023410402.png" /></td><td>1368840 - 2341040</td></tr><tr><td style="text-align: center;"><img src="legend/Provinsi_total_penduduk_1_234104045536003.png" /></td><td>2341040 - 4553600</td></tr><tr><td style="text-align: center;"><img src="legend/Provinsi_total_penduduk_1_4553600250786004.png" /></td><td>4553600 - 25078600</td></tr></table>', layer: layer_Provinsi_total_penduduk_1},
-            {label: "Gmaps", layer: layer_Gmaps_0},]
+            {label: "Gmaps", layer: layer_Gmaps_0, radioGroup: 'bm' },]
         var lay = L.control.layers.tree(null, overlaysTree,{
             //namedToggle: true,
             //selectorBack: false,
