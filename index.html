@@ -10,7 +10,9 @@
         <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
         <link rel="stylesheet" href="css/qgis2web.css">
         <link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-search.css">
         <link rel="stylesheet" href="css/leaflet.photon.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
         <style>
         html, body, #map {
             width: 100%;
@@ -19,7 +21,7 @@
             margin: 0;
         }
         </style>
-        <title></title>
+        <title>Peta Penduduk Indonesia</title>
     </head>
     <body>
         <div id="map">
@@ -35,11 +37,28 @@
         <script src="js/labelgun.min.js"></script>
         <script src="js/labels.js"></script>
         <script src="js/leaflet.photon.js"></script>
-        <script src="data/Provinsi_total_penduduk_1.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="js/leaflet-search.js"></script>
+        <script src="data/ProvinsiIndonesia_1.js"></script>
         <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString' || e.target.feature.geometry.type === 'MultiLineString') {
+              highlightLayer.setStyle({
+                color: 'rgba(255, 255, 0, 1.00)',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: 'rgba(255, 255, 0, 1.00)',
+                fillOpacity: 1
+              });
+            }
+        }
         var map = L.map('map', {
             zoomControl:false, maxZoom:28, minZoom:1
-        }).fitBounds([[-8.709561535354663,98.93870334166775],[2.708224193600323,118.72739377640153]]);
+        }).fitBounds([[-14.319837985447695,97.62915006877887],[8.515733472462784,137.2065309382473]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
@@ -104,9 +123,44 @@
                 popup._contentNode.classList.remove('media');
             }
         }
+        var title = new L.Control({'position':'topright'});
+        title.onAdd = function (map) {
+            this._div = L.DomUtil.create('div', 'info');
+            this.update();
+            return this._div;
+        };
+        title.update = function () {
+            this._div.innerHTML = '<h2>Peta Penduduk Indonesia</h2>';
+        };
+        title.addTo(map);
+        var abstract = new L.Control({'position':'topright'});
+        abstract.onAdd = function (map) {
+            this._div = L.DomUtil.create('div',
+            'leaflet-control abstract');
+            this._div.id = 'abstract'
+
+                abstract.show();
+                return this._div;
+            };
+            abstract.show = function () {
+                this._div.classList.remove("abstract");
+                this._div.classList.add("abstractUncollapsed");
+                this._div.innerHTML = 'Peta ini menampilkan Total Penduduk Indonesia';
+        };
+        abstract.addTo(map);
         var zoomControl = L.control.zoom({
             position: 'topleft'
         }).addTo(map);
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0].innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0].className += ' fas fa-ruler';
         var bounds_group = new L.featureGroup([]);
         function setBounds() {
         }
@@ -123,7 +177,17 @@
         });
         layer_Gmaps_0;
         map.addLayer(layer_Gmaps_0);
-        function pop_Provinsi_total_penduduk_1(feature, layer) {
+        function pop_ProvinsiIndonesia_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (var i in e.target._eventParents) {
+                        if (typeof e.target._eventParents[i].resetStyle === 'function') {
+                            e.target._eventParents[i].resetStyle(e.target);
+                        }
+                    }
+                },
+                mouseover: highlightFeature,
+            });
             var popupContent = '<table>\
                     <tr>\
                         <td colspan="2">' + (feature.properties['id'] !== null ? autolinker.link(String(feature.properties['id']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
@@ -132,19 +196,19 @@
                         <td class="visible-with-data" id="NAMA_PROVI" colspan="2"><strong>NAMA_PROVI</strong><br />' + (feature.properties['NAMA_PROVI'] !== null ? autolinker.link(String(feature.properties['NAMA_PROVI']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <td class="visible-with-data" id="KODE_PROVI" colspan="2"><strong>KODE_PROVI</strong><br />' + (feature.properties['KODE_PROVI'] !== null ? autolinker.link(String(feature.properties['KODE_PROVI']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td colspan="2">' + (feature.properties['KODE_PROVI'] !== null ? autolinker.link(String(feature.properties['KODE_PROVI']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <td class="visible-with-data" id="Nama Provi" colspan="2"><strong>Nama Provi</strong><br />' + (feature.properties['Nama Provi'] !== null ? autolinker.link(String(feature.properties['Nama Provi']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Provinsi_J" colspan="2"><strong>Provinsi</strong><br />' + (feature.properties['Provinsi_J'] !== null ? autolinker.link(String(feature.properties['Provinsi_J']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <td class="visible-with-data" id="Jumlah Pro" colspan="2"><strong>Jumlah Pro</strong><br />' + (feature.properties['Jumlah Pro'] !== null ? autolinker.link(String(feature.properties['Jumlah Pro']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Provinsi_1" colspan="2"><strong>Jumlah Penduduk</strong><br />' + (feature.properties['Provinsi_1'] !== null ? autolinker.link(String(feature.properties['Provinsi_1']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <td class="visible-with-data" id="Jumlah Pro_1" colspan="2"><strong>Jumlah Pro_1</strong><br />' + (feature.properties['Jumlah Pro_1'] !== null ? autolinker.link(String(feature.properties['Jumlah Pro_1']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Provinsi_2" colspan="2"><strong>Penduduk Laki-Laki</strong><br />' + (feature.properties['Provinsi_2'] !== null ? autolinker.link(String(feature.properties['Provinsi_2']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <td class="visible-with-data" id="Jumlah Pro_2" colspan="2"><strong>Jumlah Pro_2</strong><br />' + (feature.properties['Jumlah Pro_2'] !== null ? autolinker.link(String(feature.properties['Jumlah Pro_2']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Provinsi_3" colspan="2"><strong>Penduduk Perempuan</strong><br />' + (feature.properties['Provinsi_3'] !== null ? autolinker.link(String(feature.properties['Provinsi_3']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -154,10 +218,10 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_Provinsi_total_penduduk_1_0(feature) {
-            if (feature.properties['Jumlah Pro_2'] >= 264700.000000 && feature.properties['Jumlah Pro_2'] <= 695940.000000 ) {
+        function style_ProvinsiIndonesia_1_0(feature) {
+            if (feature.properties['Provinsi_1'] >= 0.000000 && feature.properties['Provinsi_1'] <= 1500000.000000 ) {
                 return {
-                pane: 'pane_Provinsi_total_penduduk_1',
+                pane: 'pane_ProvinsiIndonesia_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -170,9 +234,9 @@
                 interactive: true,
             }
             }
-            if (feature.properties['Jumlah Pro_2'] >= 695940.000000 && feature.properties['Jumlah Pro_2'] <= 1368840.000000 ) {
+            if (feature.properties['Provinsi_1'] >= 1500000.000000 && feature.properties['Provinsi_1'] <= 3000000.000000 ) {
                 return {
-                pane: 'pane_Provinsi_total_penduduk_1',
+                pane: 'pane_ProvinsiIndonesia_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -185,9 +249,9 @@
                 interactive: true,
             }
             }
-            if (feature.properties['Jumlah Pro_2'] >= 1368840.000000 && feature.properties['Jumlah Pro_2'] <= 2341040.000000 ) {
+            if (feature.properties['Provinsi_1'] >= 3000000.000000 && feature.properties['Provinsi_1'] <= 15000000.000000 ) {
                 return {
-                pane: 'pane_Provinsi_total_penduduk_1',
+                pane: 'pane_ProvinsiIndonesia_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -200,9 +264,9 @@
                 interactive: true,
             }
             }
-            if (feature.properties['Jumlah Pro_2'] >= 2341040.000000 && feature.properties['Jumlah Pro_2'] <= 4553600.000000 ) {
+            if (feature.properties['Provinsi_1'] >= 15000000.000000 && feature.properties['Provinsi_1'] <= 30000000.000000 ) {
                 return {
-                pane: 'pane_Provinsi_total_penduduk_1',
+                pane: 'pane_ProvinsiIndonesia_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -215,9 +279,9 @@
                 interactive: true,
             }
             }
-            if (feature.properties['Jumlah Pro_2'] >= 4553600.000000 && feature.properties['Jumlah Pro_2'] <= 25078600.000000 ) {
+            if (feature.properties['Provinsi_1'] >= 30000000.000000 && feature.properties['Provinsi_1'] <= 100000000.000000 ) {
                 return {
-                pane: 'pane_Provinsi_total_penduduk_1',
+                pane: 'pane_ProvinsiIndonesia_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -231,22 +295,22 @@
             }
             }
         }
-        map.createPane('pane_Provinsi_total_penduduk_1');
-        map.getPane('pane_Provinsi_total_penduduk_1').style.zIndex = 401;
-        map.getPane('pane_Provinsi_total_penduduk_1').style['mix-blend-mode'] = 'normal';
-        var layer_Provinsi_total_penduduk_1 = new L.geoJson(json_Provinsi_total_penduduk_1, {
+        map.createPane('pane_ProvinsiIndonesia_1');
+        map.getPane('pane_ProvinsiIndonesia_1').style.zIndex = 401;
+        map.getPane('pane_ProvinsiIndonesia_1').style['mix-blend-mode'] = 'normal';
+        var layer_ProvinsiIndonesia_1 = new L.geoJson(json_ProvinsiIndonesia_1, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_Provinsi_total_penduduk_1',
-            layerName: 'layer_Provinsi_total_penduduk_1',
-            pane: 'pane_Provinsi_total_penduduk_1',
-            onEachFeature: pop_Provinsi_total_penduduk_1,
-            style: style_Provinsi_total_penduduk_1_0,
+            dataVar: 'json_ProvinsiIndonesia_1',
+            layerName: 'layer_ProvinsiIndonesia_1',
+            pane: 'pane_ProvinsiIndonesia_1',
+            onEachFeature: pop_ProvinsiIndonesia_1,
+            style: style_ProvinsiIndonesia_1_0,
         });
-        bounds_group.addLayer(layer_Provinsi_total_penduduk_1);
-        map.addLayer(layer_Provinsi_total_penduduk_1);
+        bounds_group.addLayer(layer_ProvinsiIndonesia_1);
+        map.addLayer(layer_ProvinsiIndonesia_1);
         var overlaysTree = [
-            {label: 'Provinsi_total_penduduk<br /><table><tr><td style="text-align: center;"><img src="legend/Provinsi_total_penduduk_1_2647006959400.png" /></td><td>264700 - 695940</td></tr><tr><td style="text-align: center;"><img src="legend/Provinsi_total_penduduk_1_69594013688401.png" /></td><td>695940 - 1368840</td></tr><tr><td style="text-align: center;"><img src="legend/Provinsi_total_penduduk_1_136884023410402.png" /></td><td>1368840 - 2341040</td></tr><tr><td style="text-align: center;"><img src="legend/Provinsi_total_penduduk_1_234104045536003.png" /></td><td>2341040 - 4553600</td></tr><tr><td style="text-align: center;"><img src="legend/Provinsi_total_penduduk_1_4553600250786004.png" /></td><td>4553600 - 25078600</td></tr></table>', layer: layer_Provinsi_total_penduduk_1},
+            {label: 'Provinsi Indonesia<br /><table><tr><td style="text-align: center;"><img src="legend/ProvinsiIndonesia_1_015000000.png" /></td><td>0 - 1500000</td></tr><tr><td style="text-align: center;"><img src="legend/ProvinsiIndonesia_1_150000030000001.png" /></td><td>1500000 - 3000000</td></tr><tr><td style="text-align: center;"><img src="legend/ProvinsiIndonesia_1_3000000150000002.png" /></td><td>3000000 - 15000000</td></tr><tr><td style="text-align: center;"><img src="legend/ProvinsiIndonesia_1_15000000300000003.png" /></td><td>15000000 - 30000000</td></tr><tr><td style="text-align: center;"><img src="legend/ProvinsiIndonesia_1_300000001000000004.png" /></td><td>30000000 - 100000000</td></tr></table>', layer: layer_ProvinsiIndonesia_1},
             {label: "Gmaps", layer: layer_Gmaps_0, radioGroup: 'bm' },]
         var lay = L.control.layers.tree(null, overlaysTree,{
             //namedToggle: true,
@@ -260,27 +324,37 @@
         lay.addTo(map);
         setBounds();
         var i = 0;
-        layer_Provinsi_total_penduduk_1.eachLayer(function(layer) {
+        layer_ProvinsiIndonesia_1.eachLayer(function(layer) {
             var context = {
                 feature: layer.feature,
                 variables: {}
             };
-            layer.bindTooltip((layer.feature.properties['NAMA_PROVI'] !== null?String('<div style="color: #323232; font-size: 10pt; font-family: \'Open Sans\', sans-serif;">' + layer.feature.properties['NAMA_PROVI']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_Provinsi_total_penduduk_1'});
+            layer.bindTooltip((layer.feature.properties['NAMA_PROVI'] !== null?String('<div style="color: #000000; font-size: 10pt; font-style: italic; font-family: \'Cambria\', sans-serif;">' + layer.feature.properties['NAMA_PROVI']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_ProvinsiIndonesia_1'});
             labels.push(layer);
             totalMarkers += 1;
               layer.added = true;
               addLabel(layer, i);
               i++;
         });
-        resetLabels([layer_Provinsi_total_penduduk_1]);
+        map.addControl(new L.Control.Search({
+            layer: layer_ProvinsiIndonesia_1,
+            initial: false,
+            hideMarkerOnCollapse: true,
+            propertyName: 'NAMA_PROVI'}));
+        if (typeof url === 'undefined') {
+            document.getElementsByClassName('search-button')[0].className += ' fa fa-binoculars';
+        } else {
+            document.getElementsByClassName('search-button')[1].className += ' fa fa-binoculars';
+        }
+        resetLabels([layer_ProvinsiIndonesia_1]);
         map.on("zoomend", function(){
-            resetLabels([layer_Provinsi_total_penduduk_1]);
+            resetLabels([layer_ProvinsiIndonesia_1]);
         });
         map.on("layeradd", function(){
-            resetLabels([layer_Provinsi_total_penduduk_1]);
+            resetLabels([layer_ProvinsiIndonesia_1]);
         });
         map.on("layerremove", function(){
-            resetLabels([layer_Provinsi_total_penduduk_1]);
+            resetLabels([layer_ProvinsiIndonesia_1]);
         });
         </script>        
     </body>
