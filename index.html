@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
         <link rel="stylesheet" href="css/qgis2web.css">
         <link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-search.css">
         <link rel="stylesheet" href="css/leaflet.photon.css">
         <style>
         html, body, #map {
@@ -27,6 +28,8 @@
         <script src="js/qgis2web_expressions.js"></script>
         <script src="js/leaflet.js"></script>
         <script src="js/L.Control.Layers.Tree.min.js"></script>
+        <script src="js/multi-style-layer.js"></script>
+        <script src="js/leaflet-svg-shape-markers.min.js"></script>
         <script src="js/leaflet.rotatedMarker.js"></script>
         <script src="js/leaflet.pattern.js"></script>
         <script src="js/leaflet-hash.js"></script>
@@ -35,10 +38,15 @@
         <script src="js/labelgun.min.js"></script>
         <script src="js/labels.js"></script>
         <script src="js/leaflet.photon.js"></script>
-        <script src="data/Provinsi_Batas_1.js"></script>
-        <script src="data/Kesehatan_2.js"></script>
-        <script src="data/Sekolah_3.js"></script>
-        <script src="data/JumlahPenduduk_4.js"></script>
+        <script src="js/leaflet-search.js"></script>
+        <script src="data/NamaPronvinsi_1.js"></script>
+        <script src="data/KabupatenKota_2.js"></script>
+        <script src="data/KabupatenTertinggal_3.js"></script>
+        <script src="data/PengeluaranRumahTangga_4.js"></script>
+        <script src="data/TenagaKerja_5.js"></script>
+        <script src="data/Kesehatan_6.js"></script>
+        <script src="data/Sekolah_7.js"></script>
+        <script src="data/JumlahPenduduk_8.js"></script>
         <script>
         var highlightLayer;
         function highlightFeature(e) {
@@ -156,7 +164,7 @@
         });
         layer_Gmaps_0;
         map.addLayer(layer_Gmaps_0);
-        function pop_Provinsi_Batas_1(feature, layer) {
+        function pop_NamaPronvinsi_1(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     for (var i in e.target._eventParents) {
@@ -169,7 +177,10 @@
             });
             var popupContent = '<table>\
                     <tr>\
-                        <td colspan="2">' + (feature.properties['NAMA_PROVI'] !== null ? autolinker.link(String(feature.properties['NAMA_PROVI']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="NAMA_PROVI" colspan="2"><strong>Nama Provinsi</strong><br />' + (feature.properties['NAMA_PROVI'] !== null ? autolinker.link(String(feature.properties['NAMA_PROVI']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="KODE_PROVI" colspan="2"><strong>Kode Provinsi</strong><br />' + (feature.properties['KODE_PROVI'] !== null ? autolinker.link(String(feature.properties['KODE_PROVI']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
@@ -179,9 +190,9 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_Provinsi_Batas_1_0() {
+        function style_NamaPronvinsi_1_0() {
             return {
-                pane: 'pane_Provinsi_Batas_1',
+                pane: 'pane_NamaPronvinsi_1',
                 opacity: 1,
                 color: 'rgba(0,0,0,1.0)',
                 dashArray: '',
@@ -192,21 +203,21 @@
                 interactive: true,
             }
         }
-        map.createPane('pane_Provinsi_Batas_1');
-        map.getPane('pane_Provinsi_Batas_1').style.zIndex = 401;
-        map.getPane('pane_Provinsi_Batas_1').style['mix-blend-mode'] = 'normal';
-        var layer_Provinsi_Batas_1 = new L.geoJson(json_Provinsi_Batas_1, {
+        map.createPane('pane_NamaPronvinsi_1');
+        map.getPane('pane_NamaPronvinsi_1').style.zIndex = 401;
+        map.getPane('pane_NamaPronvinsi_1').style['mix-blend-mode'] = 'normal';
+        var layer_NamaPronvinsi_1 = new L.geoJson(json_NamaPronvinsi_1, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_Provinsi_Batas_1',
-            layerName: 'layer_Provinsi_Batas_1',
-            pane: 'pane_Provinsi_Batas_1',
-            onEachFeature: pop_Provinsi_Batas_1,
-            style: style_Provinsi_Batas_1_0,
+            dataVar: 'json_NamaPronvinsi_1',
+            layerName: 'layer_NamaPronvinsi_1',
+            pane: 'pane_NamaPronvinsi_1',
+            onEachFeature: pop_NamaPronvinsi_1,
+            style: style_NamaPronvinsi_1_0,
         });
-        bounds_group.addLayer(layer_Provinsi_Batas_1);
-        map.addLayer(layer_Provinsi_Batas_1);
-        function pop_Kesehatan_2(feature, layer) {
+        bounds_group.addLayer(layer_NamaPronvinsi_1);
+        map.addLayer(layer_NamaPronvinsi_1);
+        function pop_KabupatenKota_2(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     for (var i in e.target._eventParents) {
@@ -219,8 +230,961 @@
             });
             var popupContent = '<table>\
                     <tr>\
-                        <td colspan="2">' + (feature.properties['NAMA_PROVI'] !== null ? autolinker.link(String(feature.properties['NAMA_PROVI']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="KAB_KOTA" colspan="2"><strong>Kabupaten Kota</strong><br />' + (feature.properties['KAB_KOTA'] !== null ? autolinker.link(String(feature.properties['KAB_KOTA']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="PROVINSI" colspan="2"><strong>Provinsi</strong><br />' + (feature.properties['PROVINSI'] !== null ? autolinker.link(String(feature.properties['PROVINSI']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_KabupatenKota_2_0(feature) {
+            switch(String(feature.properties['PROVINSI'])) {
+                case 'Aceh':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(140,145,238,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Bali':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(131,181,228,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Banten':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(200,98,31,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Bengkulu':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(91,214,85,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Daerah Istimewa Yogyakarta':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(30,103,228,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'DKI Jakarta':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(228,84,37,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Gorontalo':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(171,94,230,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Jambi':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(174,223,77,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Jawa Barat':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(239,21,232,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Jawa Tengah':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(230,73,81,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Jawa Timur':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(76,213,174,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Kalimantan Barat':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(223,177,117,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Kalimantan Selatan':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(169,232,132,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Kalimantan Tengah':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(224,226,111,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Kalimantan Timur':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(116,209,228,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Kalimantan Utara':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(236,73,182,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Kepulauan Bangka Belitung':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(24,148,206,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Kepulauan Riau':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(86,233,167,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Lampung':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(229,66,150,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Maluku':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(203,185,72,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Maluku Utara':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(115,72,234,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Nusa Tenggara Barat':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(32,219,107,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Nusa Tenggara Timur':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(91,13,200,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Papua':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(136,226,214,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Papua Barat':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(191,90,207,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Papua Barat Daya':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(224,123,160,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Papua Pegunungan':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(220,57,190,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Papua Selatan':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(229,119,141,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Papua Tengah':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(214,232,136,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Riau':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(211,183,112,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Sulawesi Barat':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(236,64,45,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Sulawesi Selatan':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(79,210,43,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Sulawesi Tengah':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(106,93,218,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Sulawesi Tenggara':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(171,82,206,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Sulawesi Utara':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(156,218,90,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Sumatera Barat':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(61,94,214,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Sumatera Selatan':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(28,222,47,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Sumatera Utara':
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(114,211,138,1.0)',
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_KabupatenKota_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(114,204,206,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_KabupatenKota_2');
+        map.getPane('pane_KabupatenKota_2').style.zIndex = 402;
+        map.getPane('pane_KabupatenKota_2').style['mix-blend-mode'] = 'normal';
+        var layer_KabupatenKota_2 = new L.geoJson(json_KabupatenKota_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_KabupatenKota_2',
+            layerName: 'layer_KabupatenKota_2',
+            pane: 'pane_KabupatenKota_2',
+            onEachFeature: pop_KabupatenKota_2,
+            style: style_KabupatenKota_2_0,
+        });
+        bounds_group.addLayer(layer_KabupatenKota_2);
+        map.addLayer(layer_KabupatenKota_2);
+        function pop_KabupatenTertinggal_3(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (var i in e.target._eventParents) {
+                        if (typeof e.target._eventParents[i].resetStyle === 'function') {
+                            e.target._eventParents[i].resetStyle(e.target);
+                        }
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Kabupaten_Tertinggal_NAMA PROVINSI'] !== null ? autolinker.link(String(feature.properties['Kabupaten_Tertinggal_NAMA PROVINSI']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Kabupaten_Tertinggal_NAMA KABUPATEN'] !== null ? autolinker.link(String(feature.properties['Kabupaten_Tertinggal_NAMA KABUPATEN']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_KabupatenTertinggal_3_0() {
+            return {
+                pane: 'pane_KabupatenTertinggal_3',
+                radius: 13.2,
+                opacity: 1,
+                color: 'rgba(184,8,8,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(184,8,8,1.0)',
+                interactive: true,
+            }
+        }
+        function style_KabupatenTertinggal_3_1() {
+            return {
+                pane: 'pane_KabupatenTertinggal_3',
+                radius: 14.4,
+                opacity: 1,
+                color: 'rgba(255,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,0,0,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_KabupatenTertinggal_3');
+        map.getPane('pane_KabupatenTertinggal_3').style.zIndex = 403;
+        map.getPane('pane_KabupatenTertinggal_3').style['mix-blend-mode'] = 'normal';
+        var layer_KabupatenTertinggal_3 = new L.geoJson.multiStyle(json_KabupatenTertinggal_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_KabupatenTertinggal_3',
+            layerName: 'layer_KabupatenTertinggal_3',
+            pane: 'pane_KabupatenTertinggal_3',
+            onEachFeature: pop_KabupatenTertinggal_3,
+            pointToLayers: [function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.shapeMarker(latlng, style_KabupatenTertinggal_3_0(feature));
+            },function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.shapeMarker(latlng, style_KabupatenTertinggal_3_1(feature));
+            },
+        ]});
+        bounds_group.addLayer(layer_KabupatenTertinggal_3);
+        function pop_PengeluaranRumahTangga_4(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (var i in e.target._eventParents) {
+                        if (typeof e.target._eventParents[i].resetStyle === 'function') {
+                            e.target._eventParents[i].resetStyle(e.target);
+                        }
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td class="visible-with-data" id="Provinsi_Jumlah_Pengeluaran_PROVINSI" colspan="2"><strong>Nama Provinsi</strong><br />' + (feature.properties['Provinsi_Jumlah_Pengeluaran_PROVINSI'] !== null ? autolinker.link(String(feature.properties['Provinsi_Jumlah_Pengeluaran_PROVINSI']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="Provinsi_Jumlah_Pengeluaran_TOTAL_PENGELUARAN" colspan="2"><strong>Total Pengeluaran</strong><br />' + (feature.properties['Provinsi_Jumlah_Pengeluaran_TOTAL_PENGELUARAN'] !== null ? autolinker.link(String(feature.properties['Provinsi_Jumlah_Pengeluaran_TOTAL_PENGELUARAN']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="Provinsi_Jumlah_Pengeluaran_PENGELUARAN_MAKANAN" colspan="2"><strong>Pengeluaran Pangan</strong><br />' + (feature.properties['Provinsi_Jumlah_Pengeluaran_PENGELUARAN_MAKANAN'] !== null ? autolinker.link(String(feature.properties['Provinsi_Jumlah_Pengeluaran_PENGELUARAN_MAKANAN']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="Provinsi_Jumlah_Pengeluaran_PENGELUARAN_NON_MAKANAN" colspan="2"><strong>Pengeluaran Non-Pangan</strong><br />' + (feature.properties['Provinsi_Jumlah_Pengeluaran_PENGELUARAN_NON_MAKANAN'] !== null ? autolinker.link(String(feature.properties['Provinsi_Jumlah_Pengeluaran_PENGELUARAN_NON_MAKANAN']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_PengeluaranRumahTangga_4_0(feature) {
+            if (feature.properties['Provinsi_Jumlah_Pengeluaran_TOTAL_PENGELUARAN'] >= 0.000000 && feature.properties['Provinsi_Jumlah_Pengeluaran_TOTAL_PENGELUARAN'] <= 1250000.000000 ) {
+                return {
+                pane: 'pane_PengeluaranRumahTangga_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,255,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Provinsi_Jumlah_Pengeluaran_TOTAL_PENGELUARAN'] >= 1250000.000000 && feature.properties['Provinsi_Jumlah_Pengeluaran_TOTAL_PENGELUARAN'] <= 1500000.000000 ) {
+                return {
+                pane: 'pane_PengeluaranRumahTangga_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,227,207,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Provinsi_Jumlah_Pengeluaran_TOTAL_PENGELUARAN'] >= 1500000.000000 && feature.properties['Provinsi_Jumlah_Pengeluaran_TOTAL_PENGELUARAN'] <= 1700000.000000 ) {
+                return {
+                pane: 'pane_PengeluaranRumahTangga_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,199,159,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Provinsi_Jumlah_Pengeluaran_TOTAL_PENGELUARAN'] >= 1700000.000000 && feature.properties['Provinsi_Jumlah_Pengeluaran_TOTAL_PENGELUARAN'] <= 2000000.000000 ) {
+                return {
+                pane: 'pane_PengeluaranRumahTangga_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,171,110,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Provinsi_Jumlah_Pengeluaran_TOTAL_PENGELUARAN'] >= 2000000.000000 && feature.properties['Provinsi_Jumlah_Pengeluaran_TOTAL_PENGELUARAN'] <= 5000000.000000 ) {
+                return {
+                pane: 'pane_PengeluaranRumahTangga_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,143,62,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_PengeluaranRumahTangga_4');
+        map.getPane('pane_PengeluaranRumahTangga_4').style.zIndex = 404;
+        map.getPane('pane_PengeluaranRumahTangga_4').style['mix-blend-mode'] = 'normal';
+        var layer_PengeluaranRumahTangga_4 = new L.geoJson(json_PengeluaranRumahTangga_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_PengeluaranRumahTangga_4',
+            layerName: 'layer_PengeluaranRumahTangga_4',
+            pane: 'pane_PengeluaranRumahTangga_4',
+            onEachFeature: pop_PengeluaranRumahTangga_4,
+            style: style_PengeluaranRumahTangga_4_0,
+        });
+        bounds_group.addLayer(layer_PengeluaranRumahTangga_4);
+        function pop_TenagaKerja_5(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (var i in e.target._eventParents) {
+                        if (typeof e.target._eventParents[i].resetStyle === 'function') {
+                            e.target._eventParents[i].resetStyle(e.target);
+                        }
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td class="visible-with-data" id="Provinsi_Tenaga_Kerja_PROVINSI" colspan="2"><strong>Nama Provinsi</strong><br />' + (feature.properties['Provinsi_Tenaga_Kerja_PROVINSI'] !== null ? autolinker.link(String(feature.properties['Provinsi_Tenaga_Kerja_PROVINSI']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="Provinsi_Tenaga_Kerja_TENAGA_KERJA_SKALA_MIKRO" colspan="2"><strong>Skala Micro</strong><br />' + (feature.properties['Provinsi_Tenaga_Kerja_TENAGA_KERJA_SKALA_MIKRO'] !== null ? autolinker.link(String(feature.properties['Provinsi_Tenaga_Kerja_TENAGA_KERJA_SKALA_MIKRO']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="Provinsi_Tenaga_Kerja_TENAGA_KERJA_SKALA_KECIL" colspan="2"><strong>Skala Kecil</strong><br />' + (feature.properties['Provinsi_Tenaga_Kerja_TENAGA_KERJA_SKALA_KECIL'] !== null ? autolinker.link(String(feature.properties['Provinsi_Tenaga_Kerja_TENAGA_KERJA_SKALA_KECIL']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td class="visible-with-data" id="Provinsi_Tenaga_Kerja_TOTAL_TENAGA_KERJA" colspan="2"><strong>Total Tenaga Kerja</strong><br />' + (feature.properties['Provinsi_Tenaga_Kerja_TOTAL_TENAGA_KERJA'] !== null ? autolinker.link(String(feature.properties['Provinsi_Tenaga_Kerja_TOTAL_TENAGA_KERJA']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_TenagaKerja_5_0(feature) {
+            if (feature.properties['Provinsi_Tenaga_Kerja_TOTAL_TENAGA_KERJA'] >= 0.000000 && feature.properties['Provinsi_Tenaga_Kerja_TOTAL_TENAGA_KERJA'] <= 36000.000000 ) {
+                return {
+                pane: 'pane_TenagaKerja_5',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,255,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Provinsi_Tenaga_Kerja_TOTAL_TENAGA_KERJA'] >= 36000.000000 && feature.properties['Provinsi_Tenaga_Kerja_TOTAL_TENAGA_KERJA'] <= 70000.000000 ) {
+                return {
+                pane: 'pane_TenagaKerja_5',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(244,199,246,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Provinsi_Tenaga_Kerja_TOTAL_TENAGA_KERJA'] >= 70000.000000 && feature.properties['Provinsi_Tenaga_Kerja_TOTAL_TENAGA_KERJA'] <= 170000.000000 ) {
+                return {
+                pane: 'pane_TenagaKerja_5',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(233,144,237,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Provinsi_Tenaga_Kerja_TOTAL_TENAGA_KERJA'] >= 170000.000000 && feature.properties['Provinsi_Tenaga_Kerja_TOTAL_TENAGA_KERJA'] <= 250000.000000 ) {
+                return {
+                pane: 'pane_TenagaKerja_5',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(222,88,227,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Provinsi_Tenaga_Kerja_TOTAL_TENAGA_KERJA'] >= 250000.000000 && feature.properties['Provinsi_Tenaga_Kerja_TOTAL_TENAGA_KERJA'] <= 3000000.000000 ) {
+                return {
+                pane: 'pane_TenagaKerja_5',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(211,33,218,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_TenagaKerja_5');
+        map.getPane('pane_TenagaKerja_5').style.zIndex = 405;
+        map.getPane('pane_TenagaKerja_5').style['mix-blend-mode'] = 'normal';
+        var layer_TenagaKerja_5 = new L.geoJson(json_TenagaKerja_5, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_TenagaKerja_5',
+            layerName: 'layer_TenagaKerja_5',
+            pane: 'pane_TenagaKerja_5',
+            onEachFeature: pop_TenagaKerja_5,
+            style: style_TenagaKerja_5_0,
+        });
+        bounds_group.addLayer(layer_TenagaKerja_5);
+        function pop_Kesehatan_6(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (var i in e.target._eventParents) {
+                        if (typeof e.target._eventParents[i].resetStyle === 'function') {
+                            e.target._eventParents[i].resetStyle(e.target);
+                        }
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
                     <tr>\
                         <td class="visible-with-data" id="Provinsi_Sarana_Kesehatan_NAMA_PROVINSI" colspan="2"><strong>Nama Provinsi</strong><br />' + (feature.properties['Provinsi_Sarana_Kesehatan_NAMA_PROVINSI'] !== null ? autolinker.link(String(feature.properties['Provinsi_Sarana_Kesehatan_NAMA_PROVINSI']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
@@ -234,10 +1198,10 @@
                         <td class="visible-with-data" id="Provinsi_Sarana_Kesehatan_RS_BERSALIN" colspan="2"><strong>RS Bersalin</strong><br />' + (feature.properties['Provinsi_Sarana_Kesehatan_RS_BERSALIN'] !== null ? autolinker.link(String(feature.properties['Provinsi_Sarana_Kesehatan_RS_BERSALIN']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <td colspan="2">' + (feature.properties['Provinsi_Sarana_Kesehatan_POLIKLINIK'] !== null ? autolinker.link(String(feature.properties['Provinsi_Sarana_Kesehatan_POLIKLINIK']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Provinsi_Sarana_Kesehatan_POLIKLINIK" colspan="2"><strong>Poliklinik</strong><br />' + (feature.properties['Provinsi_Sarana_Kesehatan_POLIKLINIK'] !== null ? autolinker.link(String(feature.properties['Provinsi_Sarana_Kesehatan_POLIKLINIK']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <td colspan="2">' + (feature.properties['Provinsi_Sarana_Kesehatan_PUSKESMAS'] !== null ? autolinker.link(String(feature.properties['Provinsi_Sarana_Kesehatan_PUSKESMAS']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <td class="visible-with-data" id="Provinsi_Sarana_Kesehatan_PUSKESMAS" colspan="2"><strong>Puskesmas</strong><br />' + (feature.properties['Provinsi_Sarana_Kesehatan_PUSKESMAS'] !== null ? autolinker.link(String(feature.properties['Provinsi_Sarana_Kesehatan_PUSKESMAS']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <td class="visible-with-data" id="Provinsi_Sarana_Kesehatan_PUSKESMAS_PEMBANTU" colspan="2"><strong>Puskesmas Pembantu</strong><br />' + (feature.properties['Provinsi_Sarana_Kesehatan_PUSKESMAS_PEMBANTU'] !== null ? autolinker.link(String(feature.properties['Provinsi_Sarana_Kesehatan_PUSKESMAS_PEMBANTU']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
@@ -253,10 +1217,10 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_Kesehatan_2_0(feature) {
-            if (feature.properties['Provinsi_Sarana_Kesehatan_TOTAL_SARANA_KESEHATAN'] >= 71.000000 && feature.properties['Provinsi_Sarana_Kesehatan_TOTAL_SARANA_KESEHATAN'] <= 1344.400000 ) {
+        function style_Kesehatan_6_0(feature) {
+            if (feature.properties['Provinsi_Sarana_Kesehatan_TOTAL_SARANA_KESEHATAN'] >= 0.000000 && feature.properties['Provinsi_Sarana_Kesehatan_TOTAL_SARANA_KESEHATAN'] <= 1350.000000 ) {
                 return {
-                pane: 'pane_Kesehatan_2',
+                pane: 'pane_Kesehatan_6',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -269,9 +1233,9 @@
                 interactive: true,
             }
             }
-            if (feature.properties['Provinsi_Sarana_Kesehatan_TOTAL_SARANA_KESEHATAN'] >= 1344.400000 && feature.properties['Provinsi_Sarana_Kesehatan_TOTAL_SARANA_KESEHATAN'] <= 2064.000000 ) {
+            if (feature.properties['Provinsi_Sarana_Kesehatan_TOTAL_SARANA_KESEHATAN'] >= 1350.000000 && feature.properties['Provinsi_Sarana_Kesehatan_TOTAL_SARANA_KESEHATAN'] <= 2000.000000 ) {
                 return {
-                pane: 'pane_Kesehatan_2',
+                pane: 'pane_Kesehatan_6',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -284,9 +1248,9 @@
                 interactive: true,
             }
             }
-            if (feature.properties['Provinsi_Sarana_Kesehatan_TOTAL_SARANA_KESEHATAN'] >= 2064.000000 && feature.properties['Provinsi_Sarana_Kesehatan_TOTAL_SARANA_KESEHATAN'] <= 3902.000000 ) {
+            if (feature.properties['Provinsi_Sarana_Kesehatan_TOTAL_SARANA_KESEHATAN'] >= 2000.000000 && feature.properties['Provinsi_Sarana_Kesehatan_TOTAL_SARANA_KESEHATAN'] <= 4000.000000 ) {
                 return {
-                pane: 'pane_Kesehatan_2',
+                pane: 'pane_Kesehatan_6',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -299,9 +1263,9 @@
                 interactive: true,
             }
             }
-            if (feature.properties['Provinsi_Sarana_Kesehatan_TOTAL_SARANA_KESEHATAN'] >= 3902.000000 && feature.properties['Provinsi_Sarana_Kesehatan_TOTAL_SARANA_KESEHATAN'] <= 5640.000000 ) {
+            if (feature.properties['Provinsi_Sarana_Kesehatan_TOTAL_SARANA_KESEHATAN'] >= 4000.000000 && feature.properties['Provinsi_Sarana_Kesehatan_TOTAL_SARANA_KESEHATAN'] <= 6000.000000 ) {
                 return {
-                pane: 'pane_Kesehatan_2',
+                pane: 'pane_Kesehatan_6',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -314,9 +1278,9 @@
                 interactive: true,
             }
             }
-            if (feature.properties['Provinsi_Sarana_Kesehatan_TOTAL_SARANA_KESEHATAN'] >= 5640.000000 && feature.properties['Provinsi_Sarana_Kesehatan_TOTAL_SARANA_KESEHATAN'] <= 9200.000000 ) {
+            if (feature.properties['Provinsi_Sarana_Kesehatan_TOTAL_SARANA_KESEHATAN'] >= 6000.000000 && feature.properties['Provinsi_Sarana_Kesehatan_TOTAL_SARANA_KESEHATAN'] <= 10000.000000 ) {
                 return {
-                pane: 'pane_Kesehatan_2',
+                pane: 'pane_Kesehatan_6',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -330,20 +1294,20 @@
             }
             }
         }
-        map.createPane('pane_Kesehatan_2');
-        map.getPane('pane_Kesehatan_2').style.zIndex = 402;
-        map.getPane('pane_Kesehatan_2').style['mix-blend-mode'] = 'normal';
-        var layer_Kesehatan_2 = new L.geoJson(json_Kesehatan_2, {
+        map.createPane('pane_Kesehatan_6');
+        map.getPane('pane_Kesehatan_6').style.zIndex = 406;
+        map.getPane('pane_Kesehatan_6').style['mix-blend-mode'] = 'normal';
+        var layer_Kesehatan_6 = new L.geoJson(json_Kesehatan_6, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_Kesehatan_2',
-            layerName: 'layer_Kesehatan_2',
-            pane: 'pane_Kesehatan_2',
-            onEachFeature: pop_Kesehatan_2,
-            style: style_Kesehatan_2_0,
+            dataVar: 'json_Kesehatan_6',
+            layerName: 'layer_Kesehatan_6',
+            pane: 'pane_Kesehatan_6',
+            onEachFeature: pop_Kesehatan_6,
+            style: style_Kesehatan_6_0,
         });
-        bounds_group.addLayer(layer_Kesehatan_2);
-        function pop_Sekolah_3(feature, layer) {
+        bounds_group.addLayer(layer_Kesehatan_6);
+        function pop_Sekolah_7(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     for (var i in e.target._eventParents) {
@@ -381,10 +1345,10 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_Sekolah_3_0(feature) {
-            if (feature.properties['Provinsi_Jumlah_Sekolah_TOTAL_FASILITAS_SEKOLAH'] >= 514.000000 && feature.properties['Provinsi_Jumlah_Sekolah_TOTAL_FASILITAS_SEKOLAH'] <= 793.200000 ) {
+        function style_Sekolah_7_0(feature) {
+            if (feature.properties['Provinsi_Jumlah_Sekolah_TOTAL_FASILITAS_SEKOLAH'] >= 0.000000 && feature.properties['Provinsi_Jumlah_Sekolah_TOTAL_FASILITAS_SEKOLAH'] <= 800.000000 ) {
                 return {
-                pane: 'pane_Sekolah_3',
+                pane: 'pane_Sekolah_7',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -397,9 +1361,9 @@
                 interactive: true,
             }
             }
-            if (feature.properties['Provinsi_Jumlah_Sekolah_TOTAL_FASILITAS_SEKOLAH'] >= 793.200000 && feature.properties['Provinsi_Jumlah_Sekolah_TOTAL_FASILITAS_SEKOLAH'] <= 1640.600000 ) {
+            if (feature.properties['Provinsi_Jumlah_Sekolah_TOTAL_FASILITAS_SEKOLAH'] >= 800.000000 && feature.properties['Provinsi_Jumlah_Sekolah_TOTAL_FASILITAS_SEKOLAH'] <= 1600.000000 ) {
                 return {
-                pane: 'pane_Sekolah_3',
+                pane: 'pane_Sekolah_7',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -412,9 +1376,9 @@
                 interactive: true,
             }
             }
-            if (feature.properties['Provinsi_Jumlah_Sekolah_TOTAL_FASILITAS_SEKOLAH'] >= 1640.600000 && feature.properties['Provinsi_Jumlah_Sekolah_TOTAL_FASILITAS_SEKOLAH'] <= 2509.400000 ) {
+            if (feature.properties['Provinsi_Jumlah_Sekolah_TOTAL_FASILITAS_SEKOLAH'] >= 1600.000000 && feature.properties['Provinsi_Jumlah_Sekolah_TOTAL_FASILITAS_SEKOLAH'] <= 2500.000000 ) {
                 return {
-                pane: 'pane_Sekolah_3',
+                pane: 'pane_Sekolah_7',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -427,9 +1391,9 @@
                 interactive: true,
             }
             }
-            if (feature.properties['Provinsi_Jumlah_Sekolah_TOTAL_FASILITAS_SEKOLAH'] >= 2509.400000 && feature.properties['Provinsi_Jumlah_Sekolah_TOTAL_FASILITAS_SEKOLAH'] <= 4080.200000 ) {
+            if (feature.properties['Provinsi_Jumlah_Sekolah_TOTAL_FASILITAS_SEKOLAH'] >= 2500.000000 && feature.properties['Provinsi_Jumlah_Sekolah_TOTAL_FASILITAS_SEKOLAH'] <= 5000.000000 ) {
                 return {
-                pane: 'pane_Sekolah_3',
+                pane: 'pane_Sekolah_7',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -442,9 +1406,9 @@
                 interactive: true,
             }
             }
-            if (feature.properties['Provinsi_Jumlah_Sekolah_TOTAL_FASILITAS_SEKOLAH'] >= 4080.200000 && feature.properties['Provinsi_Jumlah_Sekolah_TOTAL_FASILITAS_SEKOLAH'] <= 13981.000000 ) {
+            if (feature.properties['Provinsi_Jumlah_Sekolah_TOTAL_FASILITAS_SEKOLAH'] >= 5000.000000 && feature.properties['Provinsi_Jumlah_Sekolah_TOTAL_FASILITAS_SEKOLAH'] <= 15000.000000 ) {
                 return {
-                pane: 'pane_Sekolah_3',
+                pane: 'pane_Sekolah_7',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -458,20 +1422,20 @@
             }
             }
         }
-        map.createPane('pane_Sekolah_3');
-        map.getPane('pane_Sekolah_3').style.zIndex = 403;
-        map.getPane('pane_Sekolah_3').style['mix-blend-mode'] = 'normal';
-        var layer_Sekolah_3 = new L.geoJson(json_Sekolah_3, {
+        map.createPane('pane_Sekolah_7');
+        map.getPane('pane_Sekolah_7').style.zIndex = 407;
+        map.getPane('pane_Sekolah_7').style['mix-blend-mode'] = 'normal';
+        var layer_Sekolah_7 = new L.geoJson(json_Sekolah_7, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_Sekolah_3',
-            layerName: 'layer_Sekolah_3',
-            pane: 'pane_Sekolah_3',
-            onEachFeature: pop_Sekolah_3,
-            style: style_Sekolah_3_0,
+            dataVar: 'json_Sekolah_7',
+            layerName: 'layer_Sekolah_7',
+            pane: 'pane_Sekolah_7',
+            onEachFeature: pop_Sekolah_7,
+            style: style_Sekolah_7_0,
         });
-        bounds_group.addLayer(layer_Sekolah_3);
-        function pop_JumlahPenduduk_4(feature, layer) {
+        bounds_group.addLayer(layer_Sekolah_7);
+        function pop_JumlahPenduduk_8(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     for (var i in e.target._eventParents) {
@@ -503,10 +1467,10 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_JumlahPenduduk_4_0(feature) {
-            if (feature.properties['Provinsi_Jumlah_Penduduk_TOTAL_PENDUDUK'] >= 549700.000000 && feature.properties['Provinsi_Jumlah_Penduduk_TOTAL_PENDUDUK'] <= 1487860.000000 ) {
+        function style_JumlahPenduduk_8_0(feature) {
+            if (feature.properties['Provinsi_Jumlah_Penduduk_TOTAL_PENDUDUK'] >= 0.000000 && feature.properties['Provinsi_Jumlah_Penduduk_TOTAL_PENDUDUK'] <= 1500000.000000 ) {
                 return {
-                pane: 'pane_JumlahPenduduk_4',
+                pane: 'pane_JumlahPenduduk_8',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -519,9 +1483,9 @@
                 interactive: true,
             }
             }
-            if (feature.properties['Provinsi_Jumlah_Penduduk_TOTAL_PENDUDUK'] >= 1487860.000000 && feature.properties['Provinsi_Jumlah_Penduduk_TOTAL_PENDUDUK'] <= 2813640.000000 ) {
+            if (feature.properties['Provinsi_Jumlah_Penduduk_TOTAL_PENDUDUK'] >= 1500000.000000 && feature.properties['Provinsi_Jumlah_Penduduk_TOTAL_PENDUDUK'] <= 3000000.000000 ) {
                 return {
-                pane: 'pane_JumlahPenduduk_4',
+                pane: 'pane_JumlahPenduduk_8',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -534,9 +1498,9 @@
                 interactive: true,
             }
             }
-            if (feature.properties['Provinsi_Jumlah_Penduduk_TOTAL_PENDUDUK'] >= 2813640.000000 && feature.properties['Provinsi_Jumlah_Penduduk_TOTAL_PENDUDUK'] <= 4694240.000000 ) {
+            if (feature.properties['Provinsi_Jumlah_Penduduk_TOTAL_PENDUDUK'] >= 3000000.000000 && feature.properties['Provinsi_Jumlah_Penduduk_TOTAL_PENDUDUK'] <= 5000000.000000 ) {
                 return {
-                pane: 'pane_JumlahPenduduk_4',
+                pane: 'pane_JumlahPenduduk_8',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -549,9 +1513,9 @@
                 interactive: true,
             }
             }
-            if (feature.properties['Provinsi_Jumlah_Penduduk_TOTAL_PENDUDUK'] >= 4694240.000000 && feature.properties['Provinsi_Jumlah_Penduduk_TOTAL_PENDUDUK'] <= 9285140.000000 ) {
+            if (feature.properties['Provinsi_Jumlah_Penduduk_TOTAL_PENDUDUK'] >= 5000000.000000 && feature.properties['Provinsi_Jumlah_Penduduk_TOTAL_PENDUDUK'] <= 15000000.000000 ) {
                 return {
-                pane: 'pane_JumlahPenduduk_4',
+                pane: 'pane_JumlahPenduduk_8',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -564,9 +1528,9 @@
                 interactive: true,
             }
             }
-            if (feature.properties['Provinsi_Jumlah_Penduduk_TOTAL_PENDUDUK'] >= 9285140.000000 && feature.properties['Provinsi_Jumlah_Penduduk_TOTAL_PENDUDUK'] <= 50759000.000000 ) {
+            if (feature.properties['Provinsi_Jumlah_Penduduk_TOTAL_PENDUDUK'] >= 15000000.000000 && feature.properties['Provinsi_Jumlah_Penduduk_TOTAL_PENDUDUK'] <= 50000000.000000 ) {
                 return {
-                pane: 'pane_JumlahPenduduk_4',
+                pane: 'pane_JumlahPenduduk_8',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -580,24 +1544,28 @@
             }
             }
         }
-        map.createPane('pane_JumlahPenduduk_4');
-        map.getPane('pane_JumlahPenduduk_4').style.zIndex = 404;
-        map.getPane('pane_JumlahPenduduk_4').style['mix-blend-mode'] = 'normal';
-        var layer_JumlahPenduduk_4 = new L.geoJson(json_JumlahPenduduk_4, {
+        map.createPane('pane_JumlahPenduduk_8');
+        map.getPane('pane_JumlahPenduduk_8').style.zIndex = 408;
+        map.getPane('pane_JumlahPenduduk_8').style['mix-blend-mode'] = 'normal';
+        var layer_JumlahPenduduk_8 = new L.geoJson(json_JumlahPenduduk_8, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_JumlahPenduduk_4',
-            layerName: 'layer_JumlahPenduduk_4',
-            pane: 'pane_JumlahPenduduk_4',
-            onEachFeature: pop_JumlahPenduduk_4,
-            style: style_JumlahPenduduk_4_0,
+            dataVar: 'json_JumlahPenduduk_8',
+            layerName: 'layer_JumlahPenduduk_8',
+            pane: 'pane_JumlahPenduduk_8',
+            onEachFeature: pop_JumlahPenduduk_8,
+            style: style_JumlahPenduduk_8_0,
         });
-        bounds_group.addLayer(layer_JumlahPenduduk_4);
+        bounds_group.addLayer(layer_JumlahPenduduk_8);
         var overlaysTree = [
-            {label: 'Jumlah Penduduk<br /><table><tr><td style="text-align: center;"><img src="legend/JumlahPenduduk_4_54970014878600.png" /></td><td>549700 - 1487860</td></tr><tr><td style="text-align: center;"><img src="legend/JumlahPenduduk_4_148786028136401.png" /></td><td>1487860 - 2813640</td></tr><tr><td style="text-align: center;"><img src="legend/JumlahPenduduk_4_281364046942402.png" /></td><td>2813640 - 4694240</td></tr><tr><td style="text-align: center;"><img src="legend/JumlahPenduduk_4_469424092851403.png" /></td><td>4694240 - 9285140</td></tr><tr><td style="text-align: center;"><img src="legend/JumlahPenduduk_4_9285140507590004.png" /></td><td>9285140 - 50759000</td></tr></table>', layer: layer_JumlahPenduduk_4},
-            {label: 'Sekolah <br /><table><tr><td style="text-align: center;"><img src="legend/Sekolah_3_5147930.png" /></td><td>514 - 793</td></tr><tr><td style="text-align: center;"><img src="legend/Sekolah_3_79316411.png" /></td><td>793 - 1641</td></tr><tr><td style="text-align: center;"><img src="legend/Sekolah_3_164125092.png" /></td><td>1641 - 2509</td></tr><tr><td style="text-align: center;"><img src="legend/Sekolah_3_250940803.png" /></td><td>2509 - 4080</td></tr><tr><td style="text-align: center;"><img src="legend/Sekolah_3_4080139814.png" /></td><td>4080 - 13981</td></tr></table>', layer: layer_Sekolah_3},
-            {label: 'Kesehatan<br /><table><tr><td style="text-align: center;"><img src="legend/Kesehatan_2_7113440.png" /></td><td>71 - 1344</td></tr><tr><td style="text-align: center;"><img src="legend/Kesehatan_2_134420641.png" /></td><td>1344 - 2064</td></tr><tr><td style="text-align: center;"><img src="legend/Kesehatan_2_206439022.png" /></td><td>2064 - 3902</td></tr><tr><td style="text-align: center;"><img src="legend/Kesehatan_2_390256403.png" /></td><td>3902 - 5640</td></tr><tr><td style="text-align: center;"><img src="legend/Kesehatan_2_564092004.png" /></td><td>5640 - 9200</td></tr></table>', layer: layer_Kesehatan_2},
-            {label: '<img src="legend/Provinsi_Batas_1.png" /> Provinsi_Batas', layer: layer_Provinsi_Batas_1},
+            {label: 'Jumlah Penduduk<br /><table><tr><td style="text-align: center;"><img src="legend/JumlahPenduduk_8_15Jt0.png" /></td><td>< 1.5 Jt</td></tr><tr><td style="text-align: center;"><img src="legend/JumlahPenduduk_8_15Jt3Jt1.png" /></td><td>1.5 Jt - 3 Jt</td></tr><tr><td style="text-align: center;"><img src="legend/JumlahPenduduk_8_3Jt5Jt2.png" /></td><td>3 Jt - 5 Jt</td></tr><tr><td style="text-align: center;"><img src="legend/JumlahPenduduk_8_5Jt15Jt3.png" /></td><td>5 Jt - 15 Jt</td></tr><tr><td style="text-align: center;"><img src="legend/JumlahPenduduk_8_15Jt50Jt4.png" /></td><td>15 Jt - 50 Jt</td></tr></table>', layer: layer_JumlahPenduduk_8},
+            {label: 'Sekolah <br /><table><tr><td style="text-align: center;"><img src="legend/Sekolah_7_08000.png" /></td><td>0 - 800</td></tr><tr><td style="text-align: center;"><img src="legend/Sekolah_7_80016001.png" /></td><td>800 - 1600</td></tr><tr><td style="text-align: center;"><img src="legend/Sekolah_7_160025002.png" /></td><td>1600 - 2500</td></tr><tr><td style="text-align: center;"><img src="legend/Sekolah_7_250050003.png" /></td><td>2500 - 5000</td></tr><tr><td style="text-align: center;"><img src="legend/Sekolah_7_5000150004.png" /></td><td>5000 - 15000</td></tr></table>', layer: layer_Sekolah_7},
+            {label: 'Kesehatan<br /><table><tr><td style="text-align: center;"><img src="legend/Kesehatan_6_013500.png" /></td><td>0 - 1350</td></tr><tr><td style="text-align: center;"><img src="legend/Kesehatan_6_135020001.png" /></td><td>1350 - 2000</td></tr><tr><td style="text-align: center;"><img src="legend/Kesehatan_6_200040002.png" /></td><td>2000 - 4000</td></tr><tr><td style="text-align: center;"><img src="legend/Kesehatan_6_400060003.png" /></td><td>4000 - 6000</td></tr><tr><td style="text-align: center;"><img src="legend/Kesehatan_6_6000100004.png" /></td><td>6000 - 10000</td></tr></table>', layer: layer_Kesehatan_6},
+            {label: 'Tenaga Kerja<br /><table><tr><td style="text-align: center;"><img src="legend/TenagaKerja_5_360000.png" /></td><td>< 36000</td></tr><tr><td style="text-align: center;"><img src="legend/TenagaKerja_5_36000700001.png" /></td><td>36000 - 70000</td></tr><tr><td style="text-align: center;"><img src="legend/TenagaKerja_5_700001700002.png" /></td><td>70000 - 170000</td></tr><tr><td style="text-align: center;"><img src="legend/TenagaKerja_5_1700002500003.png" /></td><td>170000 - 250000</td></tr><tr><td style="text-align: center;"><img src="legend/TenagaKerja_5_2500004.png" /></td><td>> 250000</td></tr></table>', layer: layer_TenagaKerja_5},
+            {label: 'Pengeluaran Rumah Tangga<br /><table><tr><td style="text-align: center;"><img src="legend/PengeluaranRumahTangga_4_125Jt0.png" /></td><td>< 1.25 Jt</td></tr><tr><td style="text-align: center;"><img src="legend/PengeluaranRumahTangga_4_125Jt15Jt1.png" /></td><td>1.25 Jt - 1.5 Jt</td></tr><tr><td style="text-align: center;"><img src="legend/PengeluaranRumahTangga_4_15Jt17Jt2.png" /></td><td>1.5 Jt - 1.7 Jt</td></tr><tr><td style="text-align: center;"><img src="legend/PengeluaranRumahTangga_4_17Jt2Jt3.png" /></td><td>1.7 Jt - 2 Jt</td></tr><tr><td style="text-align: center;"><img src="legend/PengeluaranRumahTangga_4_2Jt4.png" /></td><td>> 2 Jt</td></tr></table>', layer: layer_PengeluaranRumahTangga_4},
+            {label: '<img src="legend/KabupatenTertinggal_3.png" /> Kabupaten Tertinggal', layer: layer_KabupatenTertinggal_3},
+            {label: 'Kabupaten Kota<br /><table><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_Aceh0.png" /></td><td>Aceh</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_Bali1.png" /></td><td>Bali</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_Banten2.png" /></td><td>Banten</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_Bengkulu3.png" /></td><td>Bengkulu</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_DaerahIstimewaYogyakarta4.png" /></td><td>Daerah Istimewa Yogyakarta</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_DKIJakarta5.png" /></td><td>DKI Jakarta</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_Gorontalo6.png" /></td><td>Gorontalo</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_Jambi7.png" /></td><td>Jambi</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_JawaBarat8.png" /></td><td>Jawa Barat</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_JawaTengah9.png" /></td><td>Jawa Tengah</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_JawaTimur10.png" /></td><td>Jawa Timur</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_KalimantanBarat11.png" /></td><td>Kalimantan Barat</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_KalimantanSelatan12.png" /></td><td>Kalimantan Selatan</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_KalimantanTengah13.png" /></td><td>Kalimantan Tengah</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_KalimantanTimur14.png" /></td><td>Kalimantan Timur</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_KalimantanUtara15.png" /></td><td>Kalimantan Utara</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_KepulauanBangkaBelitung16.png" /></td><td>Kepulauan Bangka Belitung</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_KepulauanRiau17.png" /></td><td>Kepulauan Riau</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_Lampung18.png" /></td><td>Lampung</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_Maluku19.png" /></td><td>Maluku</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_MalukuUtara20.png" /></td><td>Maluku Utara</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_NusaTenggaraBarat21.png" /></td><td>Nusa Tenggara Barat</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_NusaTenggaraTimur22.png" /></td><td>Nusa Tenggara Timur</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_Papua23.png" /></td><td>Papua</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_PapuaBarat24.png" /></td><td>Papua Barat</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_PapuaBaratDaya25.png" /></td><td>Papua Barat Daya</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_PapuaPegunungan26.png" /></td><td>Papua Pegunungan</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_PapuaSelatan27.png" /></td><td>Papua Selatan</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_PapuaTengah28.png" /></td><td>Papua Tengah</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_Riau29.png" /></td><td>Riau</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_SulawesiBarat30.png" /></td><td>Sulawesi Barat</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_SulawesiSelatan31.png" /></td><td>Sulawesi Selatan</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_SulawesiTengah32.png" /></td><td>Sulawesi Tengah</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_SulawesiTenggara33.png" /></td><td>Sulawesi Tenggara</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_SulawesiUtara34.png" /></td><td>Sulawesi Utara</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_SumateraBarat35.png" /></td><td>Sumatera Barat</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_SumateraSelatan36.png" /></td><td>Sumatera Selatan</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_SumateraUtara37.png" /></td><td>Sumatera Utara</td></tr><tr><td style="text-align: center;"><img src="legend/KabupatenKota_2_38.png" /></td><td></td></tr></table>', layer: layer_KabupatenKota_2},
+            {label: '<img src="legend/NamaPronvinsi_1.png" /> Nama Pronvinsi', layer: layer_NamaPronvinsi_1},
             {label: "Gmaps", layer: layer_Gmaps_0, radioGroup: 'bm' },]
         var lay = L.control.layers.tree(null, overlaysTree,{
             //namedToggle: true,
@@ -609,16 +1577,77 @@
             collapsed: true,
         });
         lay.addTo(map);
-        setBounds();
-        resetLabels([layer_JumlahPenduduk_4]);
         map.on("zoomend", function(){
-            resetLabels([layer_JumlahPenduduk_4]);
+
+                if (map.hasLayer(layer_KabupatenKota_2)) {
+                    if (map.getZoom() <= 7 && map.getZoom() >= 15) {
+                        layer_KabupatenKota_2.eachLayer(function (layer) {
+                            layer.openTooltip();
+                        });
+                    } else {
+                        layer_KabupatenKota_2.eachLayer(function (layer) {
+                            layer.closeTooltip();
+                        });
+                    }
+                }
+        });
+        setBounds();
+        var i = 0;
+        layer_NamaPronvinsi_1.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['NAMA_PROVI'] !== null?String('<div style="color: #efff0b; font-size: 10pt; font-family: \'Noto Serif JP Medium\', sans-serif;">' + layer.feature.properties['NAMA_PROVI']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_NamaPronvinsi_1'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        var i = 0;
+        layer_KabupatenKota_2.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['KAB_KOTA'] !== null?String('<div style="color: #000000; font-size: 8pt; font-family: \'Open Sans\', sans-serif;">' + layer.feature.properties['KAB_KOTA']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_KabupatenKota_2'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+                if (map.hasLayer(layer_KabupatenKota_2)) {
+                    if (map.getZoom() <= 7 && map.getZoom() >= 15) {
+                        layer_KabupatenKota_2.eachLayer(function (layer) {
+                            layer.openTooltip();
+                        });
+                    } else {
+                        layer_KabupatenKota_2.eachLayer(function (layer) {
+                            layer.closeTooltip();
+                        });
+                    }
+                }
+        map.addControl(new L.Control.Search({
+            layer: layer_KabupatenKota_2,
+            initial: false,
+            hideMarkerOnCollapse: true,
+            propertyName: 'KAB_KOTA'}));
+        if (typeof url === 'undefined') {
+            document.getElementsByClassName('search-button')[0].className += ' fa fa-binoculars';
+        } else {
+            document.getElementsByClassName('search-button')[1].className += ' fa fa-binoculars';
+        }
+        resetLabels([layer_NamaPronvinsi_1,layer_KabupatenKota_2,layer_JumlahPenduduk_8]);
+        map.on("zoomend", function(){
+            resetLabels([layer_NamaPronvinsi_1,layer_KabupatenKota_2,layer_JumlahPenduduk_8]);
         });
         map.on("layeradd", function(){
-            resetLabels([layer_JumlahPenduduk_4]);
+            resetLabels([layer_NamaPronvinsi_1,layer_KabupatenKota_2,layer_JumlahPenduduk_8]);
         });
         map.on("layerremove", function(){
-            resetLabels([layer_JumlahPenduduk_4]);
+            resetLabels([layer_NamaPronvinsi_1,layer_KabupatenKota_2,layer_JumlahPenduduk_8]);
         });
         </script>        
     </body>
