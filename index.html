@@ -12,6 +12,8 @@
         <link rel="stylesheet" href="css/fontawesome-all.min.css">
         <link rel="stylesheet" href="css/leaflet-search.css">
         <link rel="stylesheet" href="css/leaflet.photon.css">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet.zoomhome/dist/leaflet.zoomhome.min.css" />
+
         <style>
         html, body, #map {
             width: 100%;
@@ -115,7 +117,6 @@
                     video.style.maxWidth = "60vw";
                     imgTd.parentNode.replaceChild(video, imgTd);
                     popup._contentNode.classList.add('media');
-                    // Aggiorna il popup quando il video carica i metadati
                     video.addEventListener('loadedmetadata', function() {
                         popup.update();
                     });
@@ -143,6 +144,32 @@
         var zoomControl = L.control.zoom({
             position: 'topleft'
         }).addTo(map);
+
+        var homeLatLng = [-2.5, 118];
+        var homeZoom = 5;
+
+        var zoomContainer = document.querySelector('.leaflet-control-zoom');
+
+        var zoomHome = L.DomUtil.create(
+        'a',
+  'leaflet-control-zoom-home',
+  zoomContainer
+);
+
+zoomHome.innerHTML = '🏠';
+zoomHome.href = '#';
+zoomHome.title = 'Zoom Home';
+
+
+var zoomOut = zoomContainer.querySelector('.leaflet-control-zoom-out');
+zoomContainer.insertBefore(zoomHome, zoomOut);
+
+
+L.DomEvent.on(zoomHome, 'click', function (e) {
+  L.DomEvent.stop(e);
+  map.flyTo(homeLatLng, homeZoom);
+});
+        
         var bounds_group = new L.featureGroup([]);
         function setBounds() {
             if (bounds_group.getLayers().length) {

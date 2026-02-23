@@ -347,6 +347,12 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	font-size: 22px;
 	}
 
+.leaflet-control-zoom-home {
+  font-size: 18px;
+  line-height: 26px;
+}
+
+
 
 /* layers control */
 
